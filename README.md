@@ -174,7 +174,7 @@ namespace RM_API_SDK_CSHARP
             {
                 // EnsureResponse will automatically process the error & response for you
                 // You will need handle the response yourself, you can pass it your own built class
-                await rmApi.EnsureResponse<Transaction>(client.GetAsync("/v3/payment/transaction/211208030149010416535734"));
+                await rmApi.EnsureResponse<Transaction>(client, HttpMethod.Get, "/v3/payment/transaction/211208030149010416535734");
             }
             catch (ApiErrorException error)
             {

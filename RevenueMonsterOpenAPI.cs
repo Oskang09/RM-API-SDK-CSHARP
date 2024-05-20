@@ -214,12 +214,21 @@ namespace RM_API_SDK_CSHARP
                 throw new ApiErrorException(response.StatusCode.ToString(), response.ReasonPhrase);
             }
         }
-        public async Task<T> EnsureResponse<T>(Task<HttpResponseMessage> result)
+
+        public async Task<T> EnsureResponse<T>(HttpClient client, HttpMethod method, string path, object content = null)
         {
             HttpResponseMessage response;
             try
             {
-                response = await result;
+                var request = new HttpRequestMessage(method, path);
+                if (content != null)
+                {
+                    request.Content = new StringContent(
+                        JsonConvert.SerializeObject(content, jsonSerializerSettings),
+                        Encoding.UTF8, "application/json"
+                    );
+                }
+                response = await client.SendAsync(request);
             }
             catch (Exception error)
             {
